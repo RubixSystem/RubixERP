@@ -131,13 +131,8 @@ class FindMissingTranslations extends Command
 
         $enFilesRel = $enFiles->map(fn ($f) => Str::after($f, $enPath.'/'));
 
-        $existingLocales = collect(File::directories($langRoot))
-            ->map(fn ($d) => basename($d))
-            ->sort()
-            ->values();
-
-        $locales = $existingLocales
-            ->reject(fn ($d) => $d === self::BASE_LOCALE || $d === 'vendor')
+        $locales = collect(self::SUPPORTED_LOCALES)
+            ->reject(fn ($d) => $d === self::BASE_LOCALE)
             ->when($targetLocale, fn ($collection) => $collection->filter(
                 fn ($l) => Str::lower($l) === Str::lower($targetLocale)
             ))
@@ -149,6 +144,28 @@ class FindMissingTranslations extends Command
         }
 
         $locales->each(function ($locale) use ($name, $langRoot, $enPath, $enFilesRel) {
+            $localePath = "{$langRoot}/{$locale}";
+
+            if (! File::isDirectory($localePath)) {
+                $this->results->push([
+                    'plugin'  => $name,
+                    'locale'  => $locale,
+                    'status'  => 'fail',
+                    'issues'  => 'missing locale directory',
+                ]);
+
+                $this->errors->push([
+                    'plugin'  => $name,
+                    'locale'  => $locale,
+                    'type'    => 'missing_files',
+                    'files'   => ['(entire locale directory)'],
+                ]);
+
+                $this->hasError = true;
+
+                return;
+            }
+
             $result = $this->checkLocale($name, $langRoot, $enPath, $enFilesRel, $locale);
 
             $this->results->push($result);
