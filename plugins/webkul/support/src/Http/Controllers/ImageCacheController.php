@@ -30,9 +30,10 @@ class ImageCacheController
      */
     public function getImage($filename)
     {
+        $logoPath = public_path('images/logo.png');
         try {
-            $content = Cache::remember('aureus-logo', 10080, function () {
-                return base64_encode($this->getImageFromUrl(self::AUREUS_LOGO));
+            $content = Cache::remember('aureus-logo', 10080, function () use ($logoPath) {
+                return base64_encode($this->getImageFromUrl($logoPath));
             });
         } catch (Exception $e) {
             $content = '';
@@ -54,7 +55,7 @@ class ImageCacheController
         $options = [
             'http' => [
                 'method'           => 'GET',
-                'protocol_version' => 1.1, // force use HTTP 1.1 for service mesh environment with envoy
+                'protocol_logoPath' => 1.1, // force use HTTP 1.1 for service mesh environment with envoy
                 'header'           => "Accept-language: en\r\n".
                 "Domain: $domain\r\n".
                 "User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36\r\n",
