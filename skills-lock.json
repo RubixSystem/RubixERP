@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "aureuserp-api-builder": {
+      "source": "aureuserp/agent-skills",
+      "sourceType": "github",
+      "computedHash": "051b2003a991ee7987b14b4f3b272d4a1b4c167a4869bd767dfdf24790e7c87a"
+    },
+    "aureuserp-plugin-builder": {
+      "source": "aureuserp/agent-skills",
+      "sourceType": "github",
+      "computedHash": "b7b0ac02dce0054a44f43e00ba959376f926fedc1fd26936e66f6a746fffd0fb"
+    },
+    "aureuserp-test-case-builder": {
+      "source": "aureuserp/agent-skills",
+      "sourceType": "github",
+      "computedHash": "dc0746ea18f04f2cff2ee8091d9f090b22c376d8684a7af013a7ddebb8e089ec"
+    }
+  }
+}
