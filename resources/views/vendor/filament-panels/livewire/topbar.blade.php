@@ -47,7 +47,7 @@
                     </x-slot>
 
                     <div
-                        class="grid grid-cols-2 gap-2 overflow-y-auto p-4 md:grid-cols-3"
+                        class="fi-app-launcher grid grid-cols-2 gap-2 overflow-y-auto p-4 md:grid-cols-3"
                         style="max-height: 80vh; grid-template-columns: repeat(3, minmax(0, 1fr));"
                     >
                         @foreach ($navigation as $group)

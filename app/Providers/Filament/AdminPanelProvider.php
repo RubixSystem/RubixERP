@@ -5,22 +5,21 @@ namespace App\Providers\Filament;
 use App\Http\Middleware\SetLocale;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Actions\Action;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
-use Illuminate\Support\Facades\Auth;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
-use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Webkul\Support\Filament\Pages\Profile;
 use Webkul\Support\GlobalSearchProvider;
@@ -43,7 +42,19 @@ class AdminPanelProvider extends PanelProvider
             ->emailVerification()
             ->profile()
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => [
+                    50  => '243, 244, 251',
+                    100 => '226, 230, 243',
+                    200 => '193, 201, 232',
+                    300 => '153, 164, 215',
+                    400 => '79, 99, 184',
+                    500 => '58, 74, 150',
+                    600 => '39, 49, 115',
+                    700 => '32, 40, 95',
+                    800 => '23, 32, 68',
+                    900 => '17, 24, 49',
+                    950 => '10, 14, 30',
+                ],
             ])
             ->unsavedChangesAlerts()
             ->topNavigation()
@@ -51,8 +62,8 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->userMenuItems([
                 'profile' => Action::make('profile')
-                    ->label(fn() => Auth::user()?->name)
-                    ->url(fn(): string => Profile::getUrl()),
+                    ->label(fn () => Auth::user()?->name)
+                    ->url(fn (): string => Profile::getUrl()),
             ])
             ->navigationGroups([
                 NavigationGroup::make()

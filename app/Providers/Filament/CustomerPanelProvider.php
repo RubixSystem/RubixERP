@@ -7,7 +7,6 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -32,7 +31,19 @@ class CustomerPanelProvider extends PanelProvider
             ->darkMode(false)
             ->brandLogoHeight('2rem')
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => [
+                    50  => '243, 244, 251',
+                    100 => '226, 230, 243',
+                    200 => '193, 201, 232',
+                    300 => '153, 164, 215',
+                    400 => '79, 99, 184',
+                    500 => '58, 74, 150',
+                    600 => '39, 49, 115',
+                    700 => '32, 40, 95',
+                    800 => '23, 32, 68',
+                    900 => '17, 24, 49',
+                    950 => '10, 14, 30',
+                ],
             ])
             ->topNavigation()
             ->renderHook(

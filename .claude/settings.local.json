@@ -4,7 +4,13 @@
       "WebFetch(domain:docs.aureuserp.com)",
       "WebFetch(domain:devdocs.aureuserp.com)",
       "WebSearch",
-      "WebFetch(domain:aureuserp.com)"
+      "WebFetch(domain:aureuserp.com)",
+      "Bash(vendor/bin/pint *)",
+      "Bash(php artisan *)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ]
 }
