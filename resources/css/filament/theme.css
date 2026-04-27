@@ -523,3 +523,159 @@
     max-height: 2.5rem;
     width: auto;
 }
+
+/* ==========================================================================
+   Phase 7 — Plugin Rail (tiny fixed left sidebar with module icons)
+   Coexists with top navigation. Offsets the topbar and main content to
+   the right by the rail width using :has() — login pages aren't affected
+   because the rail is auth-guarded and won't render there.
+   ========================================================================== */
+
+:root {
+    --plugin-rail-width: 56px;
+    --plugin-rail-top: 4rem; /* matches Filament topbar min-height */
+}
+
+/* The rail itself — matches topbar surface (light in light mode, dark in dark mode) */
+.fi-plugin-rail {
+    position: fixed;
+    inset-block-start: var(--plugin-rail-top);
+    inset-block-end: 0;
+    inset-inline-start: 0;
+    width: var(--plugin-rail-width);
+    background: #ffffff;
+    border-inline-end: 1px solid rgba(15, 23, 42, 0.08);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.dark .fi-plugin-rail {
+    background: rgb(17, 24, 39);          /* matches Filament's dark surface */
+    border-inline-end-color: rgba(255, 255, 255, 0.08);
+}
+
+.fi-plugin-rail-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding-block: 0.625rem;
+    padding-inline: 0.375rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 auto;
+    scrollbar-width: thin;
+    gap: 0.5rem;
+}
+
+.fi-plugin-rail-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Top section grows to fill space, pushing bottom to the bottom edge */
+.fi-plugin-rail-section-top {
+    flex: 1 1 auto;
+}
+
+.fi-plugin-rail-section-bottom {
+    flex: 0 0 auto;
+    padding-block-start: 0.5rem;
+    border-block-start: 1px solid rgba(15, 23, 42, 0.08);
+    margin-block-start: auto;
+}
+
+.dark .fi-plugin-rail-section-bottom {
+    border-block-start-color: rgba(255, 255, 255, 0.08);
+}
+
+.fi-plugin-rail-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.fi-plugin-rail-nav::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.15);
+    border-radius: 4px;
+}
+
+.dark .fi-plugin-rail-nav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.20);
+}
+
+/* Rail items (links + the "more" button) */
+.fi-plugin-rail-item {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.625rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(71, 85, 105);              /* slate-600 — calm icon on white */
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 120ms ease, color 120ms ease,
+                transform 120ms ease;
+    position: relative;
+}
+
+.fi-plugin-rail-item:hover {
+    background-color: rgba(39, 49, 115, 0.08);
+    color: var(--primary-700);
+}
+
+.fi-plugin-rail-item:active {
+    transform: scale(0.95);
+}
+
+/* Active item — brand-tinted pill with brand icon */
+.fi-plugin-rail-item.fi-active {
+    background-color: rgba(39, 49, 115, 0.12);
+    color: var(--primary-700);
+}
+
+.fi-plugin-rail-item.fi-active:hover {
+    background-color: rgba(39, 49, 115, 0.16);
+    color: var(--primary-800);
+}
+
+/* Dark mode — light icons on dark surface */
+.dark .fi-plugin-rail-item {
+    color: rgb(148, 163, 184);            /* slate-400 */
+}
+
+.dark .fi-plugin-rail-item:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: rgb(241, 245, 249);            /* slate-100 */
+}
+
+.dark .fi-plugin-rail-item.fi-active {
+    background-color: rgba(255, 255, 255, 0.10);
+    color: #ffffff;
+}
+
+.dark .fi-plugin-rail-item.fi-active:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+}
+
+.fi-plugin-rail-item-icon,
+.fi-plugin-rail-item svg {
+    width: 28px !important;
+    height: 28px !important;
+    flex-shrink: 0;
+    color: currentColor;
+    fill: currentColor;
+}
+
+/* Push only the main content to the right of the rail — the topbar
+   stays full-width, sitting above the rail. Scoped via :has() so login
+   and other auth pages (no rail rendered) stay unaffected. */
+body:has(.fi-plugin-rail) .fi-main-ctn,
+body:has(.fi-plugin-rail) .fi-layout {
+    padding-inline-start: var(--plugin-rail-width);
+}

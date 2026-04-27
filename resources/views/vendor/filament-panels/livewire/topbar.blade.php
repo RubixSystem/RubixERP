@@ -40,49 +40,6 @@
                 class="fi-topbar-close-sidebar-btn"
             />
 
-            @if ($isAdminPanel)
-                <x-filament::dropdown placement="bottom-start" teleport width="sm">
-                    <x-slot name="trigger">
-                        <x-filament::icon-button icon="icon-menu" />
-                    </x-slot>
-
-                    <div
-                        class="fi-app-launcher grid grid-cols-2 gap-2 overflow-y-auto p-4 md:grid-cols-3"
-                        style="max-height: 80vh; grid-template-columns: repeat(3, minmax(0, 1fr));"
-                    >
-                        @foreach ($navigation as $group)
-                            @php
-                                $groupLabel = $group->getLabel();
-                                $groupIcon = $group->getIcon();
-                                $itemUrl = $group->getItems()->first()?->getUrl();
-                            @endphp
-
-                            @if (! $groupLabel || ! $itemUrl || ! $groupIcon)
-                                @continue
-                            @endif
-
-                            <div
-                                @class([
-                                    'fi-topbar-item',
-                                    'fi-active' => $group->isActive(),
-                                ])
-                            >
-                                <a
-                                    href="{{ $itemUrl }}"
-                                    class="fi-topbar-item-btn flex flex-col items-center justify-center gap-2 whitespace-nowrap rounded-lg p-4 text-center text-sm font-medium"
-                                >
-                                    <x-filament::icon
-                                        :icon="$groupIcon"
-                                        style="height: 64px; width: 64px"
-                                    />
-
-                                    {{ $groupLabel }}
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                </x-filament::dropdown>
-            @endif
         @endif
 
         <div class="fi-topbar-start" style="margin-right: 0">
