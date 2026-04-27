@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.aureuserp.com)",
+      "WebFetch(domain:devdocs.aureuserp.com)",
+      "WebSearch",
+      "WebFetch(domain:aureuserp.com)"
+    ]
+  }
+}
