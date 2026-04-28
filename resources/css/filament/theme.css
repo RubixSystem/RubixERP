@@ -84,8 +84,11 @@
 
 /* White text on solid primary surfaces (filled buttons, primary badges,
    dropdown items, etc.). Filament's auto-contrast usually handles this,
-   but lock it in explicitly for #273173 to guarantee legibility. */
-.fi-btn.fi-color-primary:not(.fi-btn-outlined):not(.fi-link):not(.fi-ac-link-action),
+   but lock it in explicitly for #273173 to guarantee legibility.
+   Excludes `label`-tagged buttons (used by ToggleButtons / ProgressStepper) —
+   those default to primary color even when unselected, and Filament gives
+   them `bg-white text-gray-950` until the sibling input is checked. */
+.fi-btn.fi-color-primary:not(.fi-btn-outlined):not(.fi-link):not(.fi-ac-link-action):not(label),
 .fi-badge.fi-color-primary,
 .fi-fo-toggle-input:checked,
 .fi-fo-checkbox-input:checked,
@@ -93,8 +96,19 @@
     color: #ffffff;
 }
 
-.fi-btn.fi-color-primary:not(.fi-btn-outlined):not(.fi-link):not(.fi-ac-link-action) .fi-btn-icon,
-.fi-btn.fi-color-primary:not(.fi-btn-outlined):not(.fi-link):not(.fi-ac-link-action) svg {
+.fi-btn.fi-color-primary:not(.fi-btn-outlined):not(.fi-link):not(.fi-ac-link-action):not(label) .fi-btn-icon,
+.fi-btn.fi-color-primary:not(.fi-btn-outlined):not(.fi-link):not(.fi-ac-link-action):not(label) svg {
+    color: #ffffff;
+}
+
+/* Selected segment in ToggleButtons / ProgressStepper — re-apply white text
+   only when the sibling input is checked. */
+input:checked + label.fi-btn.fi-color-primary {
+    color: #ffffff;
+}
+
+input:checked + label.fi-btn.fi-color-primary .fi-btn-icon,
+input:checked + label.fi-btn.fi-color-primary svg {
     color: #ffffff;
 }
 
@@ -678,4 +692,153 @@
 body:has(.fi-plugin-rail) .fi-main-ctn,
 body:has(.fi-plugin-rail) .fi-layout {
     padding-inline-start: var(--plugin-rail-width);
+}
+
+/* ==========================================================================
+   Phase 8 — Mobile Plugin Launcher
+   On narrow screens the fixed left rail is hidden and replaced by a
+   bars icon at the leftmost end of the topbar. Tapping it opens a
+   2-column dropdown grid of all plugin groups (top groups, then a
+   divider, then the pinned settings/plugin groups).
+   ========================================================================== */
+
+/* Hidden on desktop — only the rail is shown there */
+.fi-plugin-launcher-mobile {
+    display: none;
+}
+
+.fi-plugin-launcher-mobile-trigger {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(71, 85, 105);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: background-color 120ms ease, color 120ms ease;
+}
+
+.fi-plugin-launcher-mobile-trigger:hover {
+    background-color: rgba(39, 49, 115, 0.08);
+    color: var(--primary-700);
+}
+
+.fi-plugin-launcher-mobile-trigger:active {
+    transform: scale(0.96);
+}
+
+.fi-plugin-launcher-mobile-trigger-icon {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    color: currentColor;
+}
+
+.dark .fi-plugin-launcher-mobile-trigger {
+    color: rgb(148, 163, 184);
+}
+
+.dark .fi-plugin-launcher-mobile-trigger:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: rgb(241, 245, 249);
+}
+
+/* Dropdown panel */
+.fi-plugin-launcher-mobile-panel {
+    padding: 0.625rem;
+}
+
+.fi-plugin-launcher-mobile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.375rem;
+}
+
+.fi-plugin-launcher-mobile-divider {
+    height: 1px;
+    background-color: rgba(15, 23, 42, 0.08);
+    margin-block: 0.625rem;
+}
+
+.dark .fi-plugin-launcher-mobile-divider {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.fi-plugin-launcher-mobile-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.625rem;
+    color: rgb(51, 65, 85);
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 120ms ease, color 120ms ease,
+                transform 120ms ease;
+    min-height: 5rem;
+}
+
+.fi-plugin-launcher-mobile-item:hover {
+    background-color: rgba(39, 49, 115, 0.06);
+    color: var(--primary-700);
+}
+
+.fi-plugin-launcher-mobile-item:active {
+    transform: scale(0.97);
+}
+
+.fi-plugin-launcher-mobile-item.fi-active {
+    background-color: rgba(39, 49, 115, 0.10);
+    color: var(--primary-700);
+}
+
+.fi-plugin-launcher-mobile-item-icon {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    color: currentColor;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.fi-plugin-launcher-mobile-item-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+.dark .fi-plugin-launcher-mobile-item {
+    color: rgb(203, 213, 225);
+}
+
+.dark .fi-plugin-launcher-mobile-item:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: rgb(241, 245, 249);
+}
+
+.dark .fi-plugin-launcher-mobile-item.fi-active {
+    background-color: rgba(255, 255, 255, 0.10);
+    color: rgb(241, 245, 249);
+}
+
+/* Below `lg` (matches Filament's own mobile cutoff): hide the rail,
+   drop the content offset, show the launcher next to Filament's
+   built-in sidebar hamburger. */
+@media (max-width: 1023.98px) {
+    .fi-plugin-rail {
+        display: none;
+    }
+
+    body:has(.fi-plugin-rail) .fi-main-ctn,
+    body:has(.fi-plugin-rail) .fi-layout {
+        padding-inline-start: 0;
+    }
+
+    .fi-plugin-launcher-mobile {
+        display: inline-flex;
+    }
 }

@@ -135,6 +135,10 @@ class AdminPanelProvider extends PanelProvider
                 PanelsRenderHook::BODY_START,
                 fn (): string => view('filament.components.plugin-rail')->render(),
             )
+            ->renderHook(
+                PanelsRenderHook::TOPBAR_START,
+                fn (): string => view('filament.components.plugin-launcher-mobile')->render(),
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
